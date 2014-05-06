@@ -26,5 +26,13 @@ Turning in
 
 When you're done, create a gist on github. Please submit a pull request against this README linking to your gist.
 
+Extra Credit
+===
+Re-write your implementation without:
+
+each
+local variables
+code duplication
+
 Gists
 ===

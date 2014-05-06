@@ -26,69 +26,47 @@ class Dogs
              {:name => "Trixie", :size => :small, :owner => andrew},]
   end
 
-  # only edit below this line
-
   def small_dogs
-    small_dogs = []
-    @dogs.each do |dog|
-      if dog[:size].to_s == "small"
-        small_dogs << dog
-      end
-    end
-    small_dogs
+    filter(:small)
   end
 
   def huge_dog
-    @dogs.each do |dog|
-      if dog[:size].to_s == "huge"
-        return dog
-      end
-    end
+    @dogs.find { |dog| dog[:size] == :huge}
   end
 
   def large_dog_names
-    large_dog_names = []
-    @dogs.each do |dog|
-      if dog[:size].to_s == "large"
-        large_dog_names << dog[:name]
-      end
-    end
-    large_dog_names
+    dog_names(filter(:large))
   end
 
   def joes_large_dogs
-    joes_large_dogs = []
-    @dogs.each do |dog|
-      if dog[:size].to_s == "large" && dog[:owner][:name][:first] == "Joe"
-        joes_large_dogs << dog[:name]
-      end
-    end
-    joes_large_dogs
+    dog_names(filter(:large).select { |dog| dog[:owner][:name][:first] == "Joe" })
   end
 
   def sizes
-    sizes = []
-    @dogs.each do |dog|
-       sizes << dog[:size]
-    end
-    sizes.uniq
+    @dogs.map { |dog| dog[:size] }.uniq
   end
 
   def owners
-    owners = []
-    @dogs.each do |dog|
-      owners << "#{dog[:owner][:name][:first]} #{dog[:owner][:name][:last]}"
-    end
-    owners.uniq
+    owner_names(@dogs).uniq
   end
 
   def average_owners
-    average_owners = []
-    @dogs.each do |dog|
-      if dog[:owner][:owner_quality] == AVERAGE
-        average_owners << "#{dog[:owner][:name][:first]} #{dog[:owner][:name][:last]}"
-      end
+    owner_names(@dogs.select { |dog| dog[:owner][:owner_quality] == AVERAGE}).uniq
+  end
+
+  private
+
+  def filter(size)
+    @dogs.select { |dog| dog[:size] == size }
+  end
+
+  def dog_names(selected_dogs)
+    selected_dogs.map { |dog| dog[:name]}
+  end
+
+  def owner_names(dogs)
+    dogs.map do |dog|
+      "#{dog[:owner][:name][:first]} #{dog[:owner][:name][:last]}"
     end
-    average_owners.uniq
   end
 end
